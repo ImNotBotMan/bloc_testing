@@ -1,12 +1,12 @@
-import 'package:blocExample/withOutlibraryBloc.dart';
 import 'package:flutter/material.dart';
+import 'package:blocExample/withOutlibraryBloc.dart';
 
 void main() {
   runApp(App());
 }
 
 class App extends StatelessWidget {
-  ColorBloc _bloc = ColorBloc();
+  CounterBloc _bloc = CounterBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +19,19 @@ class App extends StatelessWidget {
               backgroundColor: Colors.indigo,
             ),
             body: Center(
-              child: StreamBuilder(
-                stream: _bloc.outputStateStream,
-                initialData: Colors.red,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return AnimatedContainer(
-                    width: 100,
-                    height: 100,
-                    color: snapshot.data,
-                    duration: Duration(microseconds: 500),
-                  );
-                },
-              ),
-            ),
+                child: StreamBuilder(
+              stream: _bloc.outputStateStream,
+              initialData: 0,
+              builder: (context, snapshot) {
+                return Text("${snapshot.data}");
+              },
+            )),
             floatingActionButton: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
                   onPressed: () {
-                    _bloc.inputEventSink.add(colorEvent.event_red);
+                    _bloc.inputEventSink.add(numEvent.increment);
                   },
                   backgroundColor: Colors.red,
                 ),
@@ -46,7 +40,7 @@ class App extends StatelessWidget {
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    _bloc.inputEventSink.add(colorEvent.event_green);
+                    _bloc.inputEventSink.add(numEvent.decrement);
                   },
                   backgroundColor: Colors.green,
                 )

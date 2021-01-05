@@ -1,32 +1,28 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 
-enum colorEvent { event_red, event_green }
+enum numEvent { increment, decrement }
 
-class ColorBloc {
-  Color _color = Colors.red;
-  final _inputEventController = StreamController<colorEvent>();
-  StreamSink<colorEvent> get inputEventSink => _inputEventController.sink;
+class CounterBloc {
+  int _value = 0;
 
-  final _outputStateController = StreamController<Color>();
-  Stream<Color> get outputStateStream => _outputStateController.stream;
+  final _inputEventController = StreamController<numEvent>();
+  StreamSink get inputEventSink => _inputEventController.sink;
 
-  void _mapEventToState(colorEvent event) {
-    if (event == colorEvent.event_red)
-      _color = Colors.red;
-    else if (event == colorEvent.event_green)
-      _color = Colors.green;
+  final _outputStateController = StreamController();
+  Stream get outputStateStream => _outputStateController.stream;
+
+  void mapEventToState(numEvent event) {
+    if (event == numEvent.increment)
+      _value += 1;
+    else if (event == numEvent.decrement)
+      _value -= 1;
     else
-      throw Exception("wrong event type");
+      throw Exception("wrong type of event");
 
-    _outputStateController.sink.add(_color);
+    _outputStateController.sink.add(_value);
   }
 
-  ColorBloc() {
-    _inputEventController.stream.listen(_mapEventToState);
-  }
-  void dispose() {
-    _inputEventController.close();
-    _outputStateController.close();
+  CounterBloc() {
+    _inputEventController.stream.listen(mapEventToState);
   }
 }
