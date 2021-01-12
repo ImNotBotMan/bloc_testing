@@ -1,9 +1,9 @@
-import 'package:blocExample/screens/loadingScreen.dart';
+import 'package:blocExample/screens/loading_screen.dart';
+import 'package:blocExample/screens/logined_screen.dart';
+import 'package:blocExample/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/main_bloc.dart';
-import 'package:blocExample/screens/mainPage.dart';
-import 'screens/nextPage.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -18,12 +18,13 @@ class MainPage extends StatelessWidget {
         create: (context) => MainBloc(),
         child: BlocBuilder<MainBloc, MainState>(
           builder: (context, state) {
-            if (state is MainState) {
-              if (state is LoadingState) {
-                return LoadingScreen();
-              }
-              return MainFormPage();
+            if (state is DefaultState) {
+              return MainScreen();
             }
+            if (state is LoginedPageState) {
+              return LoginedScreen();
+            }
+            return LoadingScreen();
           },
         ));
   }
