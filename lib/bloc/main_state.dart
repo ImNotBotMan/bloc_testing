@@ -7,12 +7,28 @@ abstract class MainState extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadingState extends MainState {}
+class DefaultState extends MainState {}
 
-class AuthState extends MainState {}
+class LoginedState extends MainState {
+  final String value;
 
-class ProfileState extends MainState {
-  final String userId;
+  LoginedState(this.value);
+}
 
-  ProfileState(this.userId);
+class ErrorValueState extends MainState {}
+
+class IncorectFieldValueState extends ErrorValueState {}
+
+class ShortFieldValueState extends ErrorValueState {
+  final String errorText;
+  ShortFieldValueState(this.errorText);
+}
+
+class NextPageState extends MainState {}
+
+class LoadingState extends MainState {
+  final String name;
+  final String pass;
+
+  LoadingState(this.name, this.pass);
 }
